@@ -39,6 +39,10 @@ public class NeuralNetwork {
 	}
 	
 	public void analyze(float[] data) {
+		for (int i = 0; i < data.length; i++){
+			inputLayer[i].setValue(data[i]);
+		}
+		
 		
 	}
 }

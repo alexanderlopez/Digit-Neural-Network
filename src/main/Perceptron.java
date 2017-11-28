@@ -19,7 +19,7 @@ public class Perceptron {
 		layer = _layer;
 		activation = 0;
 		
-		
+		init(wlengths);
 	}
 	
 	private void init(int length) {
