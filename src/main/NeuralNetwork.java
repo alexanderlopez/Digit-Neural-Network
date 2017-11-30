@@ -43,6 +43,16 @@ public class NeuralNetwork {
 			inputLayer[i].setValue(data[i]);
 		}
 		
+		for (int i = 0; i < MID_LAYER_LENGTH; i++) {
+			layer1[i].computeValue(inputLayer);
+		}
 		
+		for (int i = 0; i < MID_LAYER_LENGTH; i++) {
+			layer2[i].computeValue(layer1);
+		}
+		
+		for (int i = 0; i < OUTPUTS; i++) {
+			outputLayer[i].computeValue(layer2);
+		}
 	}
 }
