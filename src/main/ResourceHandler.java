@@ -49,10 +49,13 @@ public class ResourceHandler {
 		bb.clear();
 		
 		buffer = new byte[countL];
+		labelData = new byte[countL];
 		is.read(buffer, 0, countL);
 		is.close();
 		
 		System.arraycopy(buffer, 0, labelData, 0, countL);
+		
+		System.out.println(magicI + ", " + magicL);
 	}
 	
 	public int[] getResource(int resourceNum) {

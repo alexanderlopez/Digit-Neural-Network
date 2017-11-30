@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class Program {
@@ -39,7 +40,14 @@ public class Program {
 	 */
 	public Program() {
 		rHandler = new ResourceHandler();
+		try {
+			rHandler.init();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
 		network = new NeuralNetwork();
+		network.init();
 		initialize();
 	}
 
@@ -55,14 +63,16 @@ public class Program {
 		JButton btnCompute = new JButton("Compute");
 		btnCompute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int[] iData = rHandler.getResource(Integer.parseInt(textImageTest.getText()));
+				int resourceNum = Integer.parseInt(textImageTest.getText()) - 1;
+				int[] iData = rHandler.getResource(resourceNum);
 				float[] fData = new float[iData.length];
 				
 				for (int i = 0; i < iData.length; i++) {
-					fData[i] = (float)iData[i]/255f;
+					fData[i] = ((float)iData[i]/255.0f);
 				}
 				
-				network.analyze(fData);
+				int answer = network.analyze(fData);
+				textAnswer.setText("Real Value: " + rHandler.getLabel(resourceNum) + " Returned Value: " + answer);
 			}
 		});
 		frame.getContentPane().add(btnCompute, BorderLayout.CENTER);

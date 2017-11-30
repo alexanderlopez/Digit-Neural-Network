@@ -38,7 +38,7 @@ public class NeuralNetwork {
 		}
 	}
 	
-	public void analyze(float[] data) {
+	public int analyze(float[] data) {
 		for (int i = 0; i < data.length; i++){
 			inputLayer[i].setValue(data[i]);
 		}
@@ -51,8 +51,18 @@ public class NeuralNetwork {
 			layer2[i].computeValue(layer1);
 		}
 		
+		float highest = 0;
+		int result = 0;
+		
 		for (int i = 0; i < OUTPUTS; i++) {
 			outputLayer[i].computeValue(layer2);
+			
+			if (outputLayer[i].getActivation() >= highest) {
+				highest = outputLayer[i].getActivation();
+				result = i;
+			}
 		}
+		
+		return result;
 	}
 }
