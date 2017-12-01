@@ -65,4 +65,12 @@ public class NeuralNetwork {
 		
 		return result;
 	}
+	
+	public void train(ResourceHandler handler, int numTrials) {
+		
+	}
+	
+	private int cost() {
+		return 0;
+	}
 }
