@@ -51,6 +51,32 @@ public class Matrix {
 		return transposed;
 	}
 	
+	public static Matrix randomize(int rows, int cols, double range) {
+		
+		double[][] rData = new double[rows][cols];
+		
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++) {
+				rData[i][j] = (Math.random()*range) - (range/2);
+			}
+		
+		Matrix random = new Matrix(rData);
+		
+		return random;
+	}
+	
+	public static Matrix sigmoid(Matrix input) {
+		Matrix result = new Matrix(input.getRows(), input.getCols());
+		
+		for (int i = 0; i < input.getRows(); i++)
+			for (int j = 0; j < input.getCols(); j++) {
+				double sigmoid_v = 1/(1+Math.exp(-input.getValueAt(i, j)));
+				result.setValue(sigmoid_v, i, j);
+			}
+		
+		return result;
+	}
+	
 	public static Matrix multiply(Matrix A, double scalar) {
 		Matrix resultant = new Matrix(A.getRows(), A.getCols());
 		for (int i = 0; i < A.getRows(); i++)
