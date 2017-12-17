@@ -13,9 +13,9 @@ public class Matrix {
 	}
 	
 	public Matrix(int _rows, int _cols) {
-		data = new double[rows][cols];
 		rows = _rows;
 		cols = _cols;
+		data = new double[rows][cols];
 	}
 	
 	public int getRows() {
