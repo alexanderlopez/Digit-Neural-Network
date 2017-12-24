@@ -123,4 +123,27 @@ public class Matrix {
 		
 		return resultant;
 	}
+	
+	public static String printString(Matrix A) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append('[');
+		
+		for (int i = 0; i < A.getRows(); i++) {
+			sb.append('[');
+			for (int j = 0; j < A.getCols() - 1; j++) {
+				sb.append(A.getValueAt(i, j));
+				sb.append(", ");
+			}
+			sb.append(A.getValueAt(i, A.getCols() - 1));
+			sb.append(']');
+			
+			if (i != (A.getRows()-1))
+				sb.append(System.lineSeparator());
+		}
+		
+		sb.append(']');
+		
+		return sb.toString();
+	}
 }

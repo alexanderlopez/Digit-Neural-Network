@@ -16,13 +16,20 @@ public class NeuralNetwork {
 	Matrix outputLayerBiases;
 	
 	public NeuralNetwork() {
-		layer1Weights = Matrix.randomize(MID_LAYER_LENGTH, INPUTS, 10);
-		layer2Weights = Matrix.randomize(MID_LAYER_LENGTH, MID_LAYER_LENGTH, 10);
-		outputLayerWeights = Matrix.randomize(OUTPUTS, MID_LAYER_LENGTH, 10);
+		layer1Weights = Matrix.randomize(MID_LAYER_LENGTH, INPUTS, 2);
+		layer2Weights = Matrix.randomize(MID_LAYER_LENGTH, MID_LAYER_LENGTH, 2);
+		outputLayerWeights = Matrix.randomize(OUTPUTS, MID_LAYER_LENGTH, 2);
 		
-		layer1Biases = Matrix.randomize(MID_LAYER_LENGTH, 1, 10);
-		layer2Biases = Matrix.randomize(MID_LAYER_LENGTH, 1, 10);
-		outputLayerBiases = Matrix.randomize(OUTPUTS, 1, 10);
+		layer1Biases = Matrix.randomize(MID_LAYER_LENGTH, 1, 2);
+		layer2Biases = Matrix.randomize(MID_LAYER_LENGTH, 1, 2);
+		outputLayerBiases = Matrix.randomize(OUTPUTS, 1, 2);
+		
+		/*System.out.println(Matrix.printString(layer1Weights));
+		System.out.println(Matrix.printString(layer2Weights));
+		System.out.println(Matrix.printString(outputLayerWeights));
+		System.out.println(Matrix.printString(layer1Biases));
+		System.out.println(Matrix.printString(layer2Biases));
+		System.out.println(Matrix.printString(outputLayerBiases));*/
 	}
 	
 	public void init() {
