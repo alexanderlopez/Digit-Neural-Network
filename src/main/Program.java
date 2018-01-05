@@ -46,7 +46,7 @@ public class Program {
 			e.printStackTrace();
 			return;
 		}
-		network = new NeuralNetwork();
+		network = new NeuralNetwork(0.1);
 		network.init();
 		initialize();
 	}

@@ -41,7 +41,7 @@ public class Matrix {
 	//STATIC METHODS
 	
 	public static Matrix transpose(Matrix m) {
-		Matrix transposed = new Matrix(m.getRows(), m.getCols());
+		Matrix transposed = new Matrix(m.getCols(), m.getRows());
 		
 		for (int i = 0; i < m.getRows(); i++)
 			for (int j = 0; j < m.getCols(); j++) {
@@ -71,6 +71,19 @@ public class Matrix {
 		for (int i = 0; i < input.getRows(); i++)
 			for (int j = 0; j < input.getCols(); j++) {
 				double sigmoid_v = 1/(1+Math.exp(-input.getValueAt(i, j)));
+				result.setValue(sigmoid_v, i, j);
+			}
+		
+		return result;
+	}
+	
+	public static Matrix sigprime(Matrix input) {
+		Matrix result = new Matrix(input.getRows(), input.getCols());
+		
+		for (int i = 0; i < input.getRows(); i++)
+			for (int j = 0; j < input.getCols(); j++) {
+				double x = input.getValueAt(i, j);
+				double sigmoid_v = (Math.exp(-x))/(Math.pow(1+Math.exp(-x), 2));
 				result.setValue(sigmoid_v, i, j);
 			}
 		
@@ -120,6 +133,19 @@ public class Matrix {
 				resultant.setValue(sum, i, j);
 			}
 		}
+		
+		return resultant;
+	}
+	
+	public static Matrix hadamard(Matrix A, Matrix B) {
+		if (A.getCols() != B.getCols() && A.getRows() != B.getRows())
+			return null;
+		
+		Matrix resultant = new Matrix(A.getRows(), A.getCols());
+		
+		for (int i = 0; i < resultant.getRows(); i++)
+			for (int j = 0; j < resultant.getCols(); j++)
+				resultant.setValue(A.getValueAt(i, j)*B.getValueAt(i, j), i, j);
 		
 		return resultant;
 	}
