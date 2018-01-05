@@ -5,6 +5,7 @@ public class NeuralNetwork {
 	static final int INPUTS = 784;
 	static final int MID_LAYER_LENGTH = 16;
 	static final int OUTPUTS = 10;
+	static final int TRAIN_LENGTH = 100;
 	
 	private double learning_rate;
 	
@@ -58,28 +59,43 @@ public class NeuralNetwork {
 	}
 	
 	public void train(ResourceHandler handler, int numTrials) {
-		int[] data = handler.getResource(1);
-		int label = handler.getLabel(1);
 		
-		Matrix inputActivations = new Matrix(data.length, 1);
+		int offset = 1;
 		
-		for (int k = 0; k < data.length; k++)
-			inputActivations.setValue(((double)data[k]/255.0d), k, 0);
+		for (int i = 1; i <= TRAIN_LENGTH; i++) {
+			
+			int[] data = handler.getResource(offset);
+			int label = handler.getLabel(offset);
 		
-		Matrix layer1Sum = Matrix.add(Matrix.dot(layer1Weights, inputActivations), layer1Biases);
-		Matrix layer1Act = Matrix.sigmoid(layer1Sum);
+			Matrix inputActivations = new Matrix(data.length, 1);
+			
+			for (int k = 0; k < data.length; k++)
+				inputActivations.setValue(((double)data[k]/255.0d), k, 0);
+			
+			Matrix layer1Sum = Matrix.add(Matrix.dot(layer1Weights, inputActivations), layer1Biases);
+			Matrix layer1Act = Matrix.sigmoid(layer1Sum);
+			
+			Matrix layer2Sum = Matrix.add(Matrix.dot(layer2Weights, layer1Act), layer2Biases);
+			Matrix layer2Act = Matrix.sigmoid(layer2Sum);
+			
+			Matrix outputLayerSum = Matrix.add(Matrix.dot(outputLayerWeights, layer2Act), outputLayerBiases);
+			Matrix outputLayerAct = Matrix.sigmoid(outputLayerSum);
+			
+			Matrix error = errorVector(outputLayerAct, label);
+			
+			Matrix outputLayerPartial = Matrix.hadamard(error, Matrix.sigprime(outputLayerSum));
+			Matrix inputGradient = Matrix.dot(outputLayerPartial, Matrix.transpose(layer2Act));
+			
+			Matrix layer2Partial = Matrix.hadamard(Matrix.dot(Matrix.transpose(outputLayerWeights), outputLayerPartial), 
+					Matrix.sigprime(layer2Sum));
+			Matrix layer2Gradient = Matrix.dot(layer2Partial, Matrix.transpose(layer1Act));
+			
+			Matrix layer1Partial = Matrix.hadamard(Matrix.dot(Matrix.transpose(layer2Weights), layer2Partial),
+					Matrix.sigprime(layer1Sum));
+			Matrix layer1Gradient = Matrix.dot(layer1Partial, Matrix.transpose(inputActivations));
 		
-		Matrix layer2Sum = Matrix.add(Matrix.dot(layer2Weights, layer1Act), layer2Biases);
-		Matrix layer2Act = Matrix.sigmoid(layer2Sum);
-		
-		Matrix outputLayerSum = Matrix.add(Matrix.dot(outputLayerWeights, layer2Act), outputLayerBiases);
-		Matrix outputLayerAct = Matrix.sigmoid(outputLayerSum);
-		
-		Matrix error = errorVector(outputLayerAct, label);
-		
-		Matrix outputLayerPartial = Matrix.hadamard(error, Matrix.sigprime(outputLayerSum));
-		Matrix inputGradient = Matrix.dot(outputLayerPartial, Matrix.transpose(layer2Act));
-		
+			offset++;
+		}
 	}
 	
 	private Matrix errorVector(Matrix output, int label) {
