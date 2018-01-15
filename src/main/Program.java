@@ -4,17 +4,21 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 public class Program {
 
@@ -157,6 +161,57 @@ public class Program {
 		mntmExportNetworkConf = new JMenuItem("Export Network Conf.");
 		mntmExportNetworkConf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JFileChooser choose = new JFileChooser();
+				choose.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				choose.showSaveDialog(frame);
+				File path = choose.getSelectedFile();
+				
+				if (!path.exists())
+					return;
+				
+				Matrix l1W = network.getLayerWeights(0);
+				Matrix l2W = network.getLayerWeights(1);
+				Matrix olW = network.getLayerWeights(2);
+				Matrix l1B = network.getLayerBiases(0);
+				Matrix l2B = network.getLayerBiases(1);
+				Matrix olB = network.getLayerBiases(2);
+				
+				File l1WP = new File(path, "l1W.csv");
+				File l2WP = new File(path, "l2W.csv");
+				File olWP = new File(path, "olW.csv");
+				File l1BP = new File(path, "l1B.csv");
+				File l2BP = new File(path, "l2B.csv");
+				File olBP = new File(path, "olB.csv");
+				
+				try {
+					BufferedWriter bw = new BufferedWriter(new FileWriter(l1WP));
+					bw.write(Matrix.toCSV(l1W));
+					bw.close();
+					
+					bw = new BufferedWriter (new FileWriter(l2WP));
+					bw.write(Matrix.toCSV(l2W));
+					bw.close();
+					
+					bw = new BufferedWriter (new FileWriter(olWP));
+					bw.write(Matrix.toCSV(olW));
+					bw.close();
+					
+					bw = new BufferedWriter (new FileWriter(l1BP));
+					bw.write(Matrix.toCSV(l1B));
+					bw.close();
+					
+					bw = new BufferedWriter (new FileWriter(l2BP));
+					bw.write(Matrix.toCSV(l2B));
+					bw.close();
+					
+					bw = new BufferedWriter (new FileWriter(olBP));
+					bw.write(Matrix.toCSV(olB));
+					bw.close();
+				} catch (IOException n) {
+					n.printStackTrace();
+				}
+				
+				answerField.setText("Exported");
 			}
 		});
 		mnFile.add(mntmExportNetworkConf);
@@ -186,8 +241,8 @@ public class Program {
 					if (answer == rHandler.getLabel(i))
 						correct++;
 				}
-				
-				answerField.setText("Accuracy: " + ((double)correct/(double)count)*100.0d);
+				double answer = (double)Math.round(((double)correct/(double)count)*10000.0d)/100.0d;
+				answerField.setText("Accuracy: " + answer + "%");
 			}
 		});
 		mnFile.add(mntmVerifyAccuracy);

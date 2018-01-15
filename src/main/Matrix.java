@@ -185,4 +185,25 @@ public class Matrix {
 		
 		return sb.toString();
 	}
+	
+	public static String toCSV(Matrix A) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(A.getRows() + "," + A.getCols());
+		sb.append(System.lineSeparator());
+		
+		for (int i = 0; i < A.getRows(); i++) {
+			for (int j = 0; j < A.getCols(); j++) {
+				sb.append(A.getValueAt(i, j));
+				
+				if (j != (A.getCols()-1))
+					sb.append(',');
+			}
+			
+			if (i != (A.getRows()-1))
+				sb.append(System.lineSeparator());
+		}
+		
+		return sb.toString();
+	}
 }

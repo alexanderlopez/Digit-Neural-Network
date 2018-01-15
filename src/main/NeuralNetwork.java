@@ -136,4 +136,68 @@ public class NeuralNetwork {
 		
 		return error;
 	}
+	
+	public void setLayerWeights(int layer, Matrix weightMatrix) {
+		switch (layer) {
+		case 0:
+			layer1Weights = weightMatrix;
+			break;
+		case 1:
+			layer2Weights = weightMatrix;
+			break;
+		case 2:
+			outputLayerWeights = weightMatrix;
+			break;
+		}
+	}
+	
+	public void setLayerBiases(int layer, Matrix biasMatrix) {
+		switch (layer) {
+		case 0:
+			layer1Biases = biasMatrix;
+			break;
+		case 1:
+			layer2Biases = biasMatrix;
+			break;
+		case 2:
+			outputLayerBiases = biasMatrix;
+			break;
+		}
+	}
+	
+	public Matrix getLayerWeights(int layer) {
+		Matrix returnMatrix = null;
+		
+		switch (layer) {
+		case 0:
+			returnMatrix = layer1Weights;
+			break;
+		case 1:
+			returnMatrix = layer2Weights;
+			break;
+		case 2:
+			returnMatrix = outputLayerWeights;
+			break;
+		}
+		
+		return returnMatrix;
+	}
+	
+	public Matrix getLayerBiases(int layer) {
+		Matrix returnMatrix = null;
+		
+		switch (layer) {
+		case 0:
+			returnMatrix = layer1Biases;
+			break;
+		case 1:
+			returnMatrix = layer2Biases;
+			break;
+		case 2:
+			returnMatrix = outputLayerBiases;
+			break;
+		}
+		
+		return returnMatrix;
+	}
 }
