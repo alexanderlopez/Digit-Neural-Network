@@ -65,6 +65,19 @@ public class Matrix {
 		return random;
 	}
 	
+	public static Matrix zero(int rows, int cols) {
+		double[][] rData = new double[rows][cols];
+		
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++) {
+				rData[i][j] = 0;
+			}
+		
+		Matrix random = new Matrix(rData);
+		
+		return random;
+	}
+	
 	public static Matrix sigmoid(Matrix input) {
 		Matrix result = new Matrix(input.getRows(), input.getCols());
 		

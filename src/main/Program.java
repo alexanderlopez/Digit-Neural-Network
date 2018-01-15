@@ -18,6 +18,7 @@ public class Program {
 	private JTextField textAnswer;
 	private ResourceHandler rHandler;
 	private NeuralNetwork network;
+	private JButton btnTrain;
 
 	/**
 	 * Launch the application.
@@ -87,6 +88,16 @@ public class Program {
 		textAnswer.setEditable(false);
 		frame.getContentPane().add(textAnswer, BorderLayout.NORTH);
 		textAnswer.setColumns(10);
+		
+		btnTrain = new JButton("Train");
+		btnTrain.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textAnswer.setText("Start training.");
+				network.train(rHandler, 599);
+				textAnswer.setText("End training");
+			}
+		});
+		frame.getContentPane().add(btnTrain, BorderLayout.EAST);
 	}
 
 }
