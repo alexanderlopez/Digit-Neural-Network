@@ -58,7 +58,7 @@ public class NeuralNetwork {
 	
 	public void train(ResourceHandler handler, int numTrials) {
 		
-		int offset = 1;
+		int offset = 0;
 		
 		for (int j = 0; j < numTrials; j++) {
 		
@@ -69,7 +69,7 @@ public class NeuralNetwork {
 			Matrix layer2BiasSum = Matrix.zero(MID_LAYER_LENGTH, 1);
 			Matrix layer1BiasSum = Matrix.zero(MID_LAYER_LENGTH, 1);
 			
-			for (int i = 1; i <= TRAIN_LENGTH; i++) {
+			for (int i = 0; i < TRAIN_LENGTH; i++) {
 				
 				int[] data = handler.getResource(offset);
 				int label = handler.getLabel(offset);
