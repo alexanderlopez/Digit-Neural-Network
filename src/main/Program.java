@@ -4,11 +4,14 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -38,6 +41,7 @@ public class Program {
 	private JMenuItem mntmExportNetworkConf;
 	private JMenuItem mntmImportNetworkConf;
 	private JMenuItem mntmVerifyAccuracy;
+	private JMenuItem mntmImportImage;
 	
 	/**
 	 * Launch the application.
@@ -86,8 +90,10 @@ public class Program {
 				int[] idata = rHandler.getResource(index - 1);
 				float[] fData = new float[idata.length];
 				
-				for (int i = 0; i < fData.length; i++)
+				for (int i = 0; i < fData.length; i++) {
+					//System.out.println(idata[i]);
 					fData[i] = (float)idata[i]/255.0f;
+				}
 				
 				int answer = network.analyze(fData);
 				
@@ -246,6 +252,37 @@ public class Program {
 			}
 		});
 		mnFile.add(mntmVerifyAccuracy);
+		
+		mntmImportImage = new JMenuItem("Import Image");
+		mnFile.add(mntmImportImage);
+		mntmImportImage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser choose = new JFileChooser();
+				choose.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				choose.showOpenDialog(frame);
+				File path = choose.getSelectedFile();
+				
+				if (!path.exists())
+					return;
+				
+				try {
+					BufferedImage image = ImageIO.read(path);
+					DataBuffer buff = image.getData().getDataBuffer();
+					
+					lblImage.setIcon(new ImageIcon(image));
+					
+					float[] data = new float[buff.getSize()];
+					
+					for (int i = 0; i < data.length; i++) {
+						data[i] = (float)buff.getElem(i)/255.0f;
+					}
+					
+					int answer = network.analyze(data);
+					answerField.setText("Result: " + answer);
+					
+				} catch (Exception e) { e.printStackTrace(); }
+			}
+		});
 	}
 
 }

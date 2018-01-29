@@ -83,4 +83,12 @@ public class ImageHandler {
 		
 		return resize;
 	}
+	
+	public BufferedImage getRawImage(int imagenum) {
+		BufferedImage image = new BufferedImage(cols,rows,BufferedImage.TYPE_BYTE_GRAY);
+		DataBuffer imageData = new DataBufferByte(endData,rows*cols,imagenum*rows*cols);
+		image.setData(Raster.createRaster(image.getSampleModel(), imageData, new Point()));
+		
+		return image;
+	}
 }
